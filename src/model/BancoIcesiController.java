@@ -53,11 +53,20 @@ public class BancoIcesiController {
 
             if(cedula == clientes[i].getCedula()){
 
-                int indiceCuenta = cuenta_deposito-1;
-                // A traves del objeto cliente se obtiene la lista de cuentas del cliente y se accede
-                // a la posicion de las cuentas y se invoca al metodo que aumenta el valor del saldo pasandole el valor del deposito
-                clientes[i].getCuentasList()[indiceCuenta].depositarDineroCuenta(saldo_deposito);
-                
+                if(clientes[i].getCuentasList()[cuenta_deposito - 1] != null){
+
+                    int indiceCuenta = cuenta_deposito-1;
+                    // A traves del objeto cliente se obtiene la lista de cuentas del cliente y se accede
+                    // a la posicion de las cuentas y se invoca al metodo que aumenta el valor del saldo pasandole el valor del deposito
+                    clientes[i].getCuentasList()[indiceCuenta].depositarDineroCuenta(saldo_deposito);
+                }
+                else{
+                    System.out.println("La cuenta ingresada no existe para este cliente");
+                }
+
+            } 
+            else{
+                System.out.println("Error. No se encuentra ningún cliente con esa cédula en el registro.");
             }
         }
     }
@@ -68,16 +77,27 @@ public class BancoIcesiController {
 
             if(cedula == clientes[i].getCedula()){
 
-                int indiceCuenta = cuenta_retiro - 1;
-                clientes[i].getCuentasList()[indiceCuenta].retirarDineroCuenta(saldo_retiro);
+                if(clientes[i].getCuentasList()[cuenta_retiro - 1] != null){
 
+                    int indiceCuenta = cuenta_retiro - 1;
+                    // A traves del objeto cliente se obtiene la lista de cuentas del cliente y se accede
+                    // a la posicion de las cuentas y se invoca al metodo que aumenta el valor del saldo pasandole el valor del deposito
+                    clientes[i].getCuentasList()[indiceCuenta].retirarDineroCuenta(saldo_retiro);
+                }
+                else{
+                    System.out.println("La cuenta ingresada no existe para este cliente");
+                }
+
+            } 
+            else{
+                System.out.println("Error. No se encuentra ningún cliente con esa cédula en el registro.");
             }
-
         }
+            
     }
 
-    public void getClienteList() {
-
+    public Cliente[] getClienteList() {
+        return clientes;
     }
 
    
