@@ -2,6 +2,10 @@ package ui;
 
 import java.util.Scanner;
 
+import model.BancoIcesiController;
+import model.Cliente;
+import model.Cuenta;
+
 public class BancoIcesiUI {
 
     /*
@@ -10,10 +14,14 @@ public class BancoIcesiUI {
      */
 
     private Scanner input;
-
+    private BancoIcesiController controller;
+    
+    int cantidad_clientes;
+    
     public static void main(String[] args) {
 
         BancoIcesiUI ui = new BancoIcesiUI();
+
         ui.menu();
 
     }
@@ -21,6 +29,7 @@ public class BancoIcesiUI {
     // Constructor
     public BancoIcesiUI() {
         input = new Scanner(System.in);
+        
     }
 
     /*
@@ -32,15 +41,16 @@ public class BancoIcesiUI {
     public void menu() {
 
         System.out.println("Bienvenido a BancoIcesi");
+        
 
         int option = 0;
         do {
             System.out.println("\nMenu Principal");
             System.out.println("-".repeat(50));
             System.out.println("Digite alguna de las siguientes opciones");
-            System.out.println("1) Registrar cliente");
-            System.out.println("2) Asignar cuenta bancaria a cliente");
-            System.out.println("3) Depositar dinero en cuenta bancaria de un cliente");
+            System.out.println("1) Registrar cliente(s)"); //Listo
+            System.out.println("2) Asignar cuenta bancaria a cliente"); //Listo
+            System.out.println("3) Depositar dinero en cuenta bancaria de un cliente"); //Listo
             System.out.println("4) Retirar dinero de una cuenta bancaria de un cliente");
             System.out.println("5) Consultar cliente por numero de cedula");
             System.out.println("6) Consultar el saldo total de todas las cuentas");
@@ -84,19 +94,116 @@ public class BancoIcesiUI {
      * Agregue la logica necesaria (instrucciones) para satisfacer los requerimientos
      */
 
-    public void registrarCliente() {
+    public  void registrarCliente() {
+        
+        // Cantidad de clientes
+        System.out.println("Ingrese la cantidad de clientes a registrar: ");
+        cantidad_clientes = input.nextInt();
+        input.nextLine();
+        controller = new BancoIcesiController(cantidad_clientes);
 
+        String nombre, cedula;
+        int edad;
+        
+        for(int i = 0; i < cantidad_clientes; i++){
+            System.out.println("Ingrese el nombre del cliente " + (i+1) );
+            nombre = input.nextLine();
+
+            do{
+                System.out.println("Ingrese la edad del cliente " + (i+1) );
+                edad = input.nextInt();
+                input.nextLine();
+
+            }while(edad <= 0);
+            
+            System.out.println("Ingrese el número de cédula del cliente " + (i+1) );
+            cedula = input.nextLine();
+
+            controller.agregarCliente(nombre, edad, cedula, i);
+        }
+        
     }
 
     public void asignarCuentaBancariaCliente() {
 
+        int cantidad_cuentas;
+
+        System.out.println("\n---> Asignación cuentas bancarias clientes");
+        
+        for(int i = 0; i < cantidad_clientes; i++){
+            
+            do{
+                System.out.println("\n¿Cuántas cuentas quiere asignar al CLIENTE " + (i+1)+": ");
+                cantidad_cuentas = input.nextInt();
+                input.nextLine();
+
+            } while(cantidad_cuentas <=0);
+
+            for(int j = 0; j<cantidad_cuentas; j++){
+                
+                // Nombre del banco
+
+                System.out.println("Ingrese el nombre del banco para la cuenta No."+(j+1) + "del cliente " + (i+1) + ": ");
+                String nombre_banco = input.nextLine();
+                                
+                // Tipo de cuenta
+
+                System.out.println("Tipo de cuenta: \n Marque 1 para cuenta de ahorros. \n Marque 2 para cuenta corriente");
+
+                System.out.println("Ingrese el numero del tipo de cuenta para la cuenta No."+(j+1) + "del cliente " + (i+1) + ": ");
+                int opcion_tipo_cuenta = input.nextInt();
+                input.nextLine();
+
+                // Saldo actual 
+
+                double saldo_actual;
+                
+                do{
+                    System.out.println("Ingrese el saldo actual de la cuenta No."+(j+1) + "del cliente " + (i+1) + ": ");
+                    saldo_actual = input.nextDouble();
+                    input.nextLine();
+                }while(saldo_actual < 0);
+
+
+                controller.agregarCuentaCliente(nombre_banco, opcion_tipo_cuenta, saldo_actual, i, j);
+            }
+        }
     }
 
     public void depositarDineroCuenta() {
 
+        System.out.println("\n---> DEPOSITAR DINERO EN CUENTA BANCARIA");
+
+        System.out.println("Ingrese la cédula del cliente al que se desea hacer el deposito: ");
+        String cedula = input.nextLine();
+
+        System.out.println("Ingrese el numero de la cuenta a la que se desea hacer el deposito: ");
+        int cuenta_deposito = input.nextInt();
+        input.nextLine();
+
+        System.out.println("Ingrese el monto del deposito: ");
+        double saldo_deposito = input.nextDouble();
+        input.nextLine();
+        
+        controller.depositarDineroCuenta(cedula, cuenta_deposito, saldo_deposito);
+
     }
 
     public void retirarDineroCuenta() {
+         System.out.println("\n---> RETIRAR DINERO DE CUENTA BANCARIA");
+
+        System.out.println("Ingrese la cédula del cliente al que se desea hacer el retiro: ");
+        String cedula = input.nextLine();
+
+        System.out.println("Ingrese el numero de la cuenta a la que se desea hacer el retiro: ");
+        int cuenta_retiro = input.nextInt();
+        input.nextLine();
+
+        System.out.println("Ingrese el monto del retiro: ");
+        double saldo_retiro = input.nextDouble();
+        input.nextLine();
+        
+        controller.retirarDineroCuenta(cedula, cuenta_retiro, saldo_retiro);
 
     }
 

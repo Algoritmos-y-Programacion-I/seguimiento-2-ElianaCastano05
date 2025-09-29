@@ -18,15 +18,10 @@ public class Cliente {
         this.cuentas_bancarias = new Cuenta[10];
     }
 
-
     // Metodos
 
-    public void agregarCuentaCliente(String nombre_banco, TipoDeCuenta tipo_cuenta, double saldo_actual){
-        for(int i = 0; i < cuentas_bancarias.length ; i++ ){
-            if(cuentas_bancarias[i] == null){
-                cuentas_bancarias[i] = new Cuenta(nombre_banco,tipo_cuenta,saldo_actual);
-            }
-        }
+    public void agregarCuentaCliente(Cuenta cuenta, int indiceCuenta){
+        cuentas_bancarias[indiceCuenta] = cuenta;
     }
 
 
@@ -36,8 +31,25 @@ public class Cliente {
      * Agregue los parametros y retorno que sean pertinentes.
      * Agregue la logica necesaria.
      */
-    public void getCuentasList() {
-
+    public Cuenta[] getCuentasList() {
+        return cuentas_bancarias;
     }
 
+    // Getters y setters
+
+    public String getNombre_cliente() {
+        return nombre_cliente;
+    }
+
+    public void setNombre_cliente(String nombre_cliente) {
+        this.nombre_cliente = nombre_cliente;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+    
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
 }

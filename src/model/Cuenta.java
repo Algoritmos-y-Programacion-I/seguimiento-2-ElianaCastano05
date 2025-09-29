@@ -15,7 +15,6 @@ public class Cuenta {
         this.nombre_banco = nombre_banco;
         this.tipo_cuenta = tipo_cuenta;
         this.saldo_actual = saldo_actual;
-
     }
 
     //Metodos
